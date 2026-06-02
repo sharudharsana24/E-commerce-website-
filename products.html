@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - ShopEase</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>ShopEase</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="cart.html">Cart (<span id="cartCount">0</span>)</a>
+    </nav>
+</header>
+
+<section class="search-section">
+    <input type="text" id="searchInput" placeholder="Search products...">
+</section>
+
+<section class="products" id="productContainer"></section>
+
+<script>
+const products = [
+    {
+        id: 1,
+        name: "Smartphone",
+        price: 15000,
+        image: "https://picsum.photos/300?1"
+    },
+    {
+        id: 2,
+        name: "Laptop",
+        price: 50000,
+        image: "https://picsum.photos/300?2"
+    },
+    {
+        id: 3,
+        name: "Headphones",
+        price: 2500,
+        image: "https://picsum.photos/300?3"
+    },
+    {
+        id: 4,
+        name: "Smart Watch",
+        price: 3500,
+        image: "https://picsum.photos/300?4"
+    },
+    {
+        id: 5,
+        name: "Camera",
+        price: 45000,
+        image: "https://picsum.photos/300?5"
+    },
+    {
+        id: 6,
+        name: "Shoes",
+        price: 3000,
+        image: "https://picsum.photos/300?6"
+    }
+];
+
+const productContainer = document.getElementById("productContainer");
+
+function displayProducts(productList) {
+    productContainer.innerHTML = "";
+
+    productList.forEach(product => {
+        productContainer.innerHTML += `
+        <div class="card">
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>₹${product.price}</p>
+            <button onclick="addToCart(${product.id})">
+                Add to Cart
+            </button>
+        </div>
+        `;
+    });
+}
+
+displayProducts(products);
+
+function addToCart(id) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push(id);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    document.getElementById("cartCount").textContent = cart.length;
+
+    alert("Product added to cart!");
+}
+
+document.getElementById("searchInput").addEventListener("keyup", function () {
+
+    const searchValue = this.value.toLowerCase();
+
+    const filteredProducts = products.filter(product =>
+        product.name.toLowerCase().includes(searchValue)
+    );
+
+    displayProducts(filteredProducts);
+});
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("cartCount").textContent = cart.length;
+</script>
+
+</body>
+</html>
